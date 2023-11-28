@@ -1,0 +1,458 @@
+#  project dependent include file for Mkinclude
+#
+# PROJECT = full
+#
+############## 1. Number of Processes ##################################
+### specifiy number of parallel (number of domains) by MPI.
+### even if RTYPE is serial, do not leave them unspecified.
+########################################################################
+
+###### Atmos #####
+###NOFPE	= 32
+NOFPE	= 64
+
+############## 2. Resolution ###########################################
+### specify horizontal, vertical, and ground resolution by uncomenting
+### one of following.
+########################################################################
+
+###### Horizontal Resolution ################
+###HRESOLUTION	= v00
+###HRESOLUTION	= v02
+###HRESOLUTION	= t5
+###HRESOLUTION	= t10
+###HRESOLUTION	= t21
+###HRESOLUTION	= t42
+###HRESOLUTION	= t63
+HRESOLUTION	= t85
+###HRESOLUTION	= t106
+###HRESOLUTION	= t213
+###HRESOLUTION	= t319
+###HRESOLUTION	= t106s5
+###HRESOLUTION	= t169s4
+###HRESOLUTION	= t213s5
+###HRESOLUTION	= x15
+###HRESOLUTION	= x21
+###HRESOLUTION	= x42
+
+###### Vertical Resolution (Atmosphere) #####
+###VRESOLUTION	= l1c
+###VRESOLUTION	= l1s
+###VRESOLUTION	= l3c
+###VRESOLUTION	= l5c
+###VRESOLUTION	= l5e
+###VRESOLUTION	= l9c
+###VRESOLUTION	= l11c
+###VRESOLUTION	= l12c
+###VRESOLUTION	= l16c
+###VRESOLUTION	= l20c
+###VRESOLUTION	= l24c
+###VRESOLUTION	= l27c
+###VRESOLUTION	= l32c
+VRESOLUTION	= l40h
+###VRESOLUTION	= l45c
+###VRESOLUTION	= l50c
+###VRESOLUTION	= l56c
+###VRESOLUTION	= l56h
+###VRESOLUTION	= l81h
+
+###### Vertical Resolution (Ground) #########
+###GRESOLUTION	= g21c
+###GRESOLUTION	= g31c
+###GRESOLUTION	= g33c
+###GRESOLUTION	= g55c
+GRESOLUTION	= g66c
+
+############## Config for AGCM ##############
+USE_COSP	= NO
+#USE_COSP	= YES
+USE_SPRINTARS	= YES
+
+############## Config for OGCM ##############
+
+###### Resolution #########
+ORESOLUTION	= med
+###ORESOLUTION	= mid
+###ORESOLUTION	= hi
+
+###### Number of tracers in OGCM: The minimum is 2
+NTDIM		= 2
+
+###### bbl?
+###BBL		=
+BBL		= -DOPT_BBL
+
+###### enstr? Never forget to set OENSTR below.
+ENSTR		=		# mid-res. Ocn.
+###ENSTR	= -DOPT_ENSTR	# hi-res. Ocn.
+
+
+############## 3. Compiling Options ####################################
+### specifi compiling options, and several options
+########################################################################
+
+###DEBUG		= -g
+###DEBUG		= $(SYSDEBUG)
+###CHECK		= $(SYSCHECK)
+DEBUG		=
+CHECK		=
+
+OPTIONS_COMMON	= -DOPT_VQIMP \
+		  -DOPT_STEEP \
+		  -DOPT_MOD_ASSELIN \
+		  -DOPT_NLSC=11 \
+		  -DOPT_MODCUM -DOPT_LSCBGT \
+		  -DOPT_BERRY -DOPT_USEQVI \
+		  -DOPT_NN04_LEV2H \
+		  -DOPT_INCL_SIMPLE \
+		  -DOPT_KSNMAX=3 \
+		  -DOPT_IDXMIN=-2 -DOPT_IDXMAX=16 \
+		  -DOPT_IDSMIN=0  -DOPT_IDSMAX=7 \
+		  -DOPT_NRDAT=100 -DOPT_NHIST=600 \
+		  -DOPT_NSCPL=150 -DOPT_NHISR=600 \
+		  -DOPT_KIMAX=281 -DOPT_NCMAX=63 \
+		  -DOPT_ICEALB -DOPT_SNWALB \
+		  -DOPT_SSNOWD \
+		  -DOPT_SW_STORAGE \
+		  -DOPT_HINES \
+		  -DOPT_SHCONV
+# hybrid coordinate
+OPTIONS_COMMON  += -DOPT_HYBRID
+# middle atmosphere
+###OPTIONS_COMMON       += -DOPT_MA
+# RCPAIR
+###OPTIONS_COMMON       += -DOPT_EMIT_RCPAIR
+# historical FSOL
+###OPTIONS_COMMON       += -DOPT_FSOL
+
+#******************************************#
+#   OPTIONS FOR PROGNOSTIC PRECIPITSTION   #
+#******************************************#
+#--- ON SNWRAD and OFF GCCN-Drizzle Interactions
+### FOR MIROC7 NEW SETTING:
+OPTIONS_PRPS   = -DOPT_CHIMERRA \
+                 -DOPT_KK00     \
+                 -DOPT_EAU
+### OFF/GCCN (NEW AUTOCONVERSION SCHEME)
+#OPTIONS_PRPS   = -DOPT_CHIMERA  \
+#                 -DOPT_HM20     \
+#                 -DOPT_SNWRAD
+### benchmark test (OFF RRAD)
+#OPTIONS_PRPS   = -DOPT_CHIMERA  \
+#                 -DOPT_KK00     \
+#                 -DOPT_SNWRAD   \
+#                 -DOPT_RAINRAD_OFF
+### benchmark test (OFF SRAD)
+#OPTIONS_PRPS   = -DOPT_CHIMERA  \
+#                 -DOPT_CHIMERRA \
+#                 -DOPT_KK00     \
+#                 -DOPT_SNWRAD   \
+#                 -DOPT_SNOWRAD_OFF
+### benchmark test (OFF RRAD and OFF SRAD)
+#OPTIONS_PRPS   = -DOPT_CHIMERA  \
+#                 -DOPT_KK00     \
+#                 -DOPT_SNWRAD   \
+#                 -DOPT_RAINRAD_OFF \
+#                 -DOPT_SNOWRAD_OFF
+#****************************************************#
+
+OPTIONS_SP	= -DOPT_SPRINTARS \
+		  -DOPT_NAERO=21 \
+		  -DOPT_MGSBFK=20 \
+		  -DOPT_OFFLINE_SOA \
+		  -DOPT_PROG_CLDN \
+		  -DOPT_DUST \
+		  -DOPT_CARBON \
+		  -DOPT_SULFATE \
+		  -DOPT_SALT
+
+OPTIONS_t42	= -DOPT_LND_MOSAIC=2
+
+OPTIONS_t85	= -DOPT_LND_MOSAIC=2
+
+OPTIONS_t106	= -DOPT_ILDIV=2 -DOPT_JLDIV=2 \
+		  -DOPT_IODIV=4 -DOPT_JODIV=6 \
+		  -DOPT_RVLIN -DOPT_IVMAX=720 -DOPT_JVMAX=360 \
+		  -DOPT_LND_MOSAIC=1
+
+OPTIONS_t213	= -DOPT_LND_MOSAIC=2
+
+#OPTIONS_t213	= -DOPT_ILDIV=2 -DOPT_JLDIV=3 \
+#		  -DOPT_IODIV=2 -DOPT_JODIV=3 \
+#		  -DOPT_RVLIN -DOPT_IVMAX=720 -DOPT_JVMAX=360 \
+#		  -DOPT_LND_MOSAIC=1
+
+OPTIONS		= $(OPTIONS_COMMON) $(OPTIONS_$(HRESOLUTION)) $(OPTIONS_PRPS)
+
+###OPTIONS	= -DOPT_DEBUG				### debug mode
+###OPTIONS	= -DOPT_VQIMP				### zonal implicit
+###OPTIONS	= -DOPT_STEEP				### monotonic constraint
+###OPTIONS	= -DOPT_HYBRID				### hybrid coordinate
+###OPTIONS	= -DOPT_BERRY				### indirect effect of aerosol
+###OPTIONS	= -DOPT_AER_PREC			### use cloud base aerosol no.
+###OPTIONS	= -DOPT_SPRINTARS -DOPT_NAERO=11 \
+###		  -DOPT_DUST -DOPT_CARBON \
+###		  -DOPT_SULFATE -DOPT_SALT		### sSPRINTARS
+###OPTIONS	= -DOPT_KSNMAX=3 \
+###		  -DOPT_IDXMIN=-2 -DOPT_IDXMAX=16 \
+###		  -DOPT_IDSMIN=0 -DOPT_IDSMAX=7		### MATSIRO
+###OPTIONS	= -DOPT_ILDIV=2 -DOPT_JLDIV=2		### divide land
+###OPTIONS	= -DOPT_IODIV=2 -DOPT_JODIV=2		### divide ocean
+###OPTIONS	= -DOPT_RVLIN -DOPT_IVMAX=720 -DOPT_JVMAX=360	### river grid
+###OPTIONS	= -DOPT_MPE				### MPE log
+###OPTIONS	= -DOPT_NOCOMMON
+###OPTIONS	= -DOPT_AERO_FORCING
+###OPTIONS	= -DOPT_NRDAT=92			### for 4dda,trn
+###OPTIONS	= -DOPT_NRDAT=95 -DOPT_NTR=5		### for 4dda,trn
+###OPTIONS	= -DOPT_NOQL -DOPT_TERM			### for scc
+###OPTIONS	= -DOPT_TRACER -DOPT_NTR=1 -DOPT_ITL=1	### for baro
+###OPTIONS	= -DOPT_NOQL -DOPT_NHDIM=1802240
+
+
+############## 4. Library and Executable Filename Extension ############
+### should leave as is, but add something if you use special compile
+### options, such as debugging, profiling, etc.
+########################################################################
+
+############## Library Filename Extension ################
+
+LIBNAME		= $(PROJECT)
+
+############# Excutable Filename Extension ###############
+
+#--- TEST (2021.11.09)
+#MODELNAME	= $(PROJECT)_PP_TEST
+#MODELNAME	= $(PROJECT)_PP_COSP2_TEST
+
+#--- Multiple Autoconversion Scheme for K.SUZUKI (2021.05.26)
+#MODELNAME	= $(PROJECT)_PRPSKK00_KS210526_COSP2
+#MODELNAME	= $(PROJECT)_PRPSBE68_KS210526_COSP2
+#MODELNAME	= $(PROJECT)_PRPSBE94_KS210526_COSP2
+#MODELNAME	= $(PROJECT)_PRPSLD04_KS210526_COSP2
+#MODELNAME	= $(PROJECT)_PRPSTC80_KS210526_COSP2
+
+#--- TEST Original expt1 (2021.11.23)
+#MODELNAME	= $(PROJECT)_PP_TEST
+#MODELNAME	= $(PROJECT)_PP_COSP2_TEST_expt1_1123
+
+#--- TEST Original expt2 (2021.11.23)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt2_211123
+
+#--- TEST Original expt3 (2021.11.25)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt3_211125
+
+#--- TEST Original expt4_5 (2021.11.30)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt4_211130
+
+#--- TEST Original expt6 (2021.11.30)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt6_211130
+
+#--- TEST Original expt6 (2021.12.07)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt6_211207
+
+#--- TEST Original expt9 (2021.12.09 & 2021.12.13)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt9_211209
+
+#--- TEST Original expt9 (2021.12.10)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt9_211210
+
+#--- TEST Original expt10 (2021.12.13)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt10_211213
+
+#--- TEST Original expt11 (2021.12.14)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt11_211214
+
+#--- TEST Original expt12 (2021.12.15)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt12_211215
+
+#--- TEST Original expt13 (2021.12.15)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt13_211215
+
+#--- TEST Original expt14_17 (2021.12.16)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt14_211216
+
+#--- TEST Original expt18 (2021.12.18)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt18_211218
+
+#--- TEST Original expt19 (2021.12.18)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt19_211218
+
+#--- TEST Original expt20 (2021.12.18)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt20_211218
+
+#--- TEST Original expt26 (2022.01.05)
+#MODELNAME	= $(PROJECT)_PP_TEST_expt26_220105
+
+
+##--- TEST_LT(Lightning)
+#--- TEST_LT expt1 (2022.04.20)
+#MODELNAME	= $(PROJECT)_PP_TEST_LT_expt1_220420
+
+#--- TEST_LT expt2 (2022.04.20)
+#MODELNAME	= $(PROJECT)_PP_TEST_LT_expt2_220620
+
+#--- TEST_LT expt3 (2022.07.23)
+#MODELNAME	= $(PROJECT)_PP_TEST_LT_expt3_220723
+
+#--- TEST_LT expt4 (2022.07.23)
+#MODELNAME	= $(PROJECT)_PP_TEST_LT_expt4_220723
+
+#--- TEST_LT expt5 (2022.12.19)
+#MODELNAME	= $(PROJECT)_PP_TEST_LT_expt5_221219
+
+#--- TEST_LT expt6 (2022.12.21)
+MODELNAME	= $(PROJECT)_PP_TEST_LT_expt6_221221
+
+
+############## 5. Non-Standard and Special routines ####################
+### place user-modified routines(objects) in SPECIALDIR and specify
+### filenames as SPECIAL.
+### un-comment favorit non-standard routines if you want to use.
+########################################################################
+
+############## Special Routine ###########################
+####### Directory
+
+SPECIALDIR	= proj/$(PROJECT)
+
+####### Routines (*.o)   Notes: SPECIALA is for MPMD[A] model,
+###                                 traditional(SPMD) CGCM and AGCM
+###                             SPECIALO is for MPMD[O] model
+###                             SPECIALC is for both MPMD[A/O] models (common)
+
+#===============================================#
+#--- NIES/SX Aurora TSUBASA
+#===============================================#
+### FOR MIROC7 TEST (21/11/09)
+# Test w/ the latest version
+SPECIALA       = \
+               padmn_CHIMERRA_200830.o  \
+               pradmX_CHIMERRA_210805.o \
+               pradtX_CHIMERRA_210213.o \
+               aeroadmn_200624.o \
+               aerocarb_200624.o \
+               aerosulf_200624.o \
+               aerodust_200624.o \
+               aerosalt_200624.o \
+               pmlsc_200830.o \
+               pcldphys_CHIMERRA_200914_NHLT.expt6.221221.o
+################################################
+# with nudging
+#SPECIALA        += ahist_nudge.o \
+#                   nudgeUVT.o
+#SPECIALA        += ahist_nudge.o \
+#                   nudgeUV.o
+
+
+SPECIALO        =
+
+SPECIALC	=
+
+SPECIAL		= $(SPECIALA) $(SPECIALO) $(SPECIALC)
+
+############## Main Routine ##############################
+
+MAINA		= GCMmainA.o	# MPMD CGCM Atm. part, traditional(SPMD) CGCM and AGCM
+MAINO		= GCMmainO.o	# MPMD CGCM Ocn. part
+
+############## nonstd/ Non-Standard Routine ##############
+
+###### Atmos #####
+ATMOS	=				# [STD]	3-dim or 2-dim
+###ATMOS	= aadmn1d.o		#	1-dim
+###ATMOS	= aadmn2c.o		#	1-dim 2-column
+###ATMOS	= aadmnsfc.o		#	0-dim surface
+###ATMOS	= aadmnocn.o		#	0-dim ocean only
+
+###### Ocean #####
+OCEAN	=				# [STD]
+###OCEAN	= noocn.o		#	dummy ocean
+
+###### Land #####
+LAND	=				# [STD]
+###LAND		= nolnd.o		#	dummy land
+
+###### River #####
+RIVER	=				# [STD]
+###RIVER	= noriv.o		#	dummy river
+
+###### User #####
+USER	=				# [STD]	Nothing
+###USER		= auser4da.o		#	nudging 4dda
+
+###### Ocean enstrophy #####
+OENSTR	=				# [STD]			  mid-res. Ocn.
+###OENSTR	= cadvc.enstr.o ctnuv.enstr.o dvlva.enstr.o	# hi-res. Ocn.
+
+###### Spherical Transform #####
+SPHERT	=				# 3-dim
+###SPHERT	= usphxz.o		# 2-dim(xz)
+###SPHERT	= usphyz.o		# 2-dim(yz)
+
+###### Cumulus Parameterization #####
+CUMULUS	=				# [STD]	prognostic Arakawa Schubert
+###CUMULUS	= pcuma.o		#	diagnostic type A-S (old STD)
+###CUMULUS	= pcumm.o		#	Manabe Adjustment
+###CUMULUS	= pcumk.o		#	Kuo
+###CUMULUS	= pcumk.o pvdfm-shl.o	#	Kuo + shallow convection
+###CUMULUS	= pcum0.o		#	without Cumulus
+
+###### Large Scale Condensation ######
+LSCCLD	=				# [STD]	Liquid Water Prediction
+###LSCCLD	= pmlsd.o		#	Diagnostic type
+###LSCCLD	= pmls0.o		#	without LSC
+
+###### Radiative Transfer #####
+RADIATE	=				# [STD]	Nakajima, maximum-random
+#RADIATE	= pradtX.o pradmX.o	#	Nakajima, mstrn X (max-rand)
+###RADIATE	= pradt-rand.o		#	Nakajima (old STD)
+###RADIATE	= pradn.o		#	Simple and Fast n-color
+
+###### Vertical Diffusion #####
+VDIFF	=				# [STD] Mellor-Yamada Lv2 moist closure
+###VDIFF	= pvdfm_dry.o		#	dry closure
+
+###### Dry Convection #########
+DRYADJ	=				# [STD]	Dry Convective Adjustment
+###DRYADJ	= pdad0.o		#	without Adjustment
+
+##### Gravity Wave Drag #######
+IGWD	=				# [STD]	McFarlane
+###IGWD		= pigw0.o		#	without IGWD
+###IGWD		= pigwd-kim.o		#	Kim-Arakawa
+
+##### FFT #######
+FFT	=				# [STD]	NCAR/Nakamura
+###FFT		= ufftr.o		#	Numerical Receipes, IMAX=2^n
+
+##### Tracer Advection #######
+TRCR	=				# [STD]	FFSL + PPM
+###TRCR		= dtrcr-vanLeer.o	#	FFSL + van Leer (old STD)
+
+##### EXTENSIONS #####
+EXTENSIONS = matsiro
+
+ifeq ($(USE_SPRINTARS),YES)
+EXTENSIONS	+= sprintars
+OPTIONS		+= $(OPTIONS_SP)
+endif
+
+ifeq ($(USE_COSP),YES)
+#EXTENSIONS	+= cosp.v1.4
+#EXTENSIONS	+= cosp.v1.4_idid
+#EXTENSIONS	+= cosp.v2.0.0_idid
+#EXTENSIONS	+= cosp.v2.0.0_idid.20181228
+#EXTENSIONS	+= cosp.v2.0.0_190414
+#EXTENSIONS	+= cosp.v2.0.0_200423
+#EXTENSIONS	+= cosp.v2.0.0_200707
+#EXTENSIONS	+= cosp.v2.0.0_200722
+#EXTENSIONS	+= cosp.v2.0.0_201130
+#EXTENSIONS	+= cosp.v2.0.0_210103
+EXTENSIONS	+= cosp.v2.0.0_210805
+OPTIONS		+= -DOPT_COSP
+endif
+
+### Local Variables:
+### mode: makefile
+### tab-width: 8
+### end:
