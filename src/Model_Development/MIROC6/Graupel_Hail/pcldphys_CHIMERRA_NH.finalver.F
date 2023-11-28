@@ -2,59 +2,6 @@
 *
 * -Specify OPT_LSCBGT to check cloud ice tendency & water and energy budget.
 *
-*   [HIS] 95/03/15(numaguti) AGCM5.4.01
-*         95/06/24(numaguti) SQRT -> **(2/3)
-*         96/05/09(numaguti) speed up
-*         96/05/13(numaguti) Tracer scavenging
-*         96/09/18(numaguti) GSIGD
-*         96/11/11(numaguti) treatment of ice
-*         96/11/20(numaguti) re-diag GDCFRC
-*         97/01/29(numaguti) OPT_WTRACE
-*         97/07/29(numaguti) output FPRCL
-*         99/04/13(numaguti) indirect effect of aerosol, Berry autoconv.
-*         99/04/20(hiro)     parallel AGCM5.5b
-*         01/05/15(numa)     revised pecipitation efficiency
-*         01/05/29(emori)    ice sedim. + re-revised prec. eff.
-*         01/05/30(emori)    CBMFX for anvil
-*         01/07/11(emori)    cloud top entrainment instability
-*         02/01/19(emori)    CBLDQR (DQRAT change for CBL)
-*         02/02/18(toshi)    online aerosol (SPRINTARS)
-*         02/04/17(don)      clean up for AGCM5.7b
-*         02/10/30(emori)    cloud diagnosis added for moist PBL closure
-*         02/11/14(emori)    add accretion term in Berry
-*         02/11/25(emori)    autoconversion timescale diagnosis
-*         02/12/13(emori)    debug (Berry autoconversion)
-*         03/01/28(emori)    remove CTEI
-*         03/05/13(emori)    use cloud base aerosol no. for AER_PREC
-*         03/06/16(ogura)    add UCOUT.
-*         03/09/05(ogochi)   MultiTasking
-*         03/09/29(emori)    try to avoid simply convert fallen ice to cloud water
-*         04/02/23(tnagashi) 2nd indirect effect handling scheme changed
-*         04/12/10(kengo)    online chemistry (CHASER + SPRINTARS)
-*         08/01/26(hiro)     new cloud scheme
-*         08/02/13(hiro)     merge with progice
-*         08/04/22(hiro)     in-cloud vapor used for ice
-*         08/12/20(ogura)    COSP outputs
-*         08/12/29(ogura)    FLIQAR introduced
-*         09/01/09(hiro)     UCOUT moved to AERCCN
-*         09/01/15(hiro)     random overlapp for cloud mass fall
-*         09/01/15(hiro)     OPT_NOQI removed
-*         09/01/21(hiro)     ice fall out/in moved to the first
-*         09/02/04(hiro)     CITD order change, ice fall for QICE<QIMIN
-*         09/02/05(hiro)     ORDIAG, WB99 removed (default)
-*         09/11/10(hiro)     CLTD for cloud liquid budgets
-*         09/09/03(yokohata) COSP.v1.1
-*         12/12/07(ogura)    bugfix: cloud ice fall
-*         16/01/22(mbata)    prognostic rain
-*         16/06/13(mbata)    CloudSat analytic radar simulator
-*         18/05/29(mbata)    new cloud/precipitation framework "CHIMERRA"
-*         18/07/20(mbata)    coupled to radiation scheme with rain+snow
-*         18/08/29(mbata)    new tendency diagnostics monitor (QTD, NTD, TTD)
-*         19/01/16(mbata)    add several autoconversion and accretion schemes
-*         19/05/16(mbata)    tuning parameters (bfice, bfsnow, depsubi, subs)
-*         19/05/24(mbata)    tuning parameters (adrmlti, eauti, dnfsubi)
-*         19/06/08(mbata)    tuning parameters (thomf)
-*         19/06/25(mbata)    tuning parameters (efrim)
 ************************************************************************
 #include "miroc.h"
 
