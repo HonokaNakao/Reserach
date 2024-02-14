@@ -3,7 +3,7 @@
 #
 RHST='www.metoffice.gov.uk'
 RTOP='/hadobs/hadcrut5/data/current'
-LTOP='/home/nozawa/HadCRUT5/Data'
+LTOP='/home/nakao/HadCRUT5/Data'
 #
 CWD=${PWD}
 #
